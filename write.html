@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Write a Letter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0c0908; --burgundy:#1a120f; --crimson:#8a3418;
+    --parchment:#e6dbc0; --parchment-dim:#b7a988; --gold:#8c7239; --smoke:#544942;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--ink); color:var(--parchment); font-family:'EB Garamond', serif; min-height:100vh;}
+  .label{font-family:'Cinzel'; letter-spacing:0.22em; text-transform:uppercase; font-size:0.65rem; color:var(--gold);}
+  .display{font-family:'Cormorant Garamond', serif;}
+
+  #gateScreen{min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:2rem;}
+  #gateScreen input{
+    background:transparent; border:1px solid var(--smoke); color:var(--parchment);
+    font-family:'EB Garamond'; font-size:1rem; padding:0.8rem 1rem; margin:1.4rem 0; width:260px; text-align:center;
+  }
+  #gateScreen button, .btn{
+    font-family:'Cinzel'; letter-spacing:0.15em; font-size:0.7rem; text-transform:uppercase;
+    background:transparent; border:1px solid var(--gold); color:var(--gold);
+    padding:0.85rem 1.8rem; cursor:pointer; transition:background 0.3s, color 0.3s;
+  }
+  #gateScreen button:hover, .btn:hover{background:var(--gold); color:var(--ink);}
+  #gateError{color:var(--crimson); font-size:0.85rem; margin-top:0.6rem; min-height:1.2em;}
+
+  #writeScreen{display:none; max-width:720px; margin:0 auto; padding:6vh 6vw 10vh;}
+  #writeScreen h1{font-size:2.2rem; margin-bottom:0.4rem;}
+  #writeScreen .sub{color:var(--parchment-dim); font-style:italic; margin-bottom:3rem;}
+
+  .field{margin-bottom:1.8rem;}
+  .field label{display:block; margin-bottom:0.6rem;}
+  .field input, .field textarea{
+    width:100%; background:#1a1113; border:1px solid rgba(201,162,39,0.3); color:var(--parchment);
+    font-family:'EB Garamond'; font-size:1.05rem; padding:0.9rem 1rem; line-height:1.6;
+  }
+  .field textarea{min-height:260px; resize:vertical;}
+  .field .count{text-align:right; font-size:0.75rem; color:var(--smoke); margin-top:0.4rem;}
+
+  .actions{display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem;}
+
+  #output{margin-top:2.4rem; display:none;}
+  #output textarea{
+    width:100%; min-height:220px; background:#1a1113; color:var(--gold); border:1px solid var(--gold);
+    font-family:monospace; font-size:0.85rem; padding:1rem; line-height:1.6;
+  }
+  #output .instructions{
+    background:rgba(201,162,39,0.08); border-left:3px solid var(--gold); padding:1rem 1.2rem; margin-bottom:1rem;
+    font-size:0.95rem; color:var(--parchment-dim);
+  }
+  #output .instructions ol{margin-left:1.2rem; margin-top:0.5rem;}
+  #output .instructions li{margin-bottom:0.4rem;}
+
+  #notifyStatus{margin-top:1rem; font-size:0.9rem; color:var(--parchment-dim); min-height:1.2em;}
+</style>
+</head>
+<body>
+
+<div id="gateScreen">
+  <p class="label">private</p>
+  <h1 class="display" style="font-size:1.8rem; font-style:italic; margin-top:0.6rem;">Enter your key</h1>
+  <input type="password" id="keyInput" placeholder="•••••••••">
+  <button id="unlockBtn">Unlock</button>
+  <div id="gateError"></div>
+</div>
+
+<div id="writeScreen">
+  <p class="label">for your eyes only</p>
+  <h1 class="display">Write a letter</h1>
+  <p class="sub">Fill this in, then follow the three steps it gives you at the end.</p>
+
+  <div class="field">
+    <label class="label">Title</label>
+    <input type="text" id="titleInput" placeholder="e.g. A Quiet Tuesday">
+  </div>
+
+  <div class="field">
+    <label class="label">Date</label>
+    <input type="date" id="dateInput">
+  </div>
+
+  <div class="field">
+    <label class="label">Letter</label>
+    <textarea id="bodyInput" placeholder="Dear Durell,&#10;&#10;..."></textarea>
+    <div class="count" id="charCount">0 characters</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="generateBtn">Generate Letter Code</button>
+  </div>
+
+  <div id="output">
+    <div class="instructions">
+      <strong>Publishing steps:</strong>
+      <ol>
+        <li>Copy the code block below</li>
+        <li>Paste it into <code>letters.js</code>, inside the <code>LETTERS = [ ... ]</code> array (anywhere — order doesn't matter)</li>
+        <li>Redeploy on Vercel, then come back and click "Send Notification" below</li>
+      </ol>
+    </div>
+    <textarea id="codeOutput" readonly></textarea>
+    <div class="actions" style="margin-top:1rem;">
+      <button class="btn" id="copyBtn">Copy Code</button>
+      <button class="btn" id="notifyBtn">Send Notification Now</button>
+    </div>
+    <div id="notifyStatus"></div>
+  </div>
+</div>
+
+<script>
+/* ---------------- SIMPLE GATE ----------------
+   Not real security — just a deterrent so a stray link doesn't let anyone
+   in. Change KEY to whatever you like before you deploy this. */
+const KEY = "hellbound";
+
+document.getElementById('unlockBtn').addEventListener('click', unlock);
+document.getElementById('keyInput').addEventListener('keydown', (e) => { if(e.key === 'Enter') unlock(); });
+
+function unlock(){
+  const val = document.getElementById('keyInput').value;
+  if(val === KEY){
+    document.getElementById('gateScreen').style.display = 'none';
+    document.getElementById('writeScreen').style.display = 'block';
+    document.getElementById('dateInput').value = new Date().toISOString().slice(0,10);
+  } else {
+    document.getElementById('gateError').textContent = "That's not it.";
+  }
+}
+
+/* ---------------- CHAR COUNT ---------------- */
+const bodyInput = document.getElementById('bodyInput');
+bodyInput.addEventListener('input', () => {
+  document.getElementById('charCount').textContent = bodyInput.value.length + ' characters';
+});
+
+/* ---------------- GENERATE CODE ---------------- */
+function slugify(str){
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+document.getElementById('generateBtn').addEventListener('click', () => {
+  const title = document.getElementById('titleInput').value.trim() || 'Untitled';
+  const date = document.getElementById('dateInput').value || new Date().toISOString().slice(0,10);
+  const body = bodyInput.value.trim();
+
+  if(!body){
+    alert('Write something first.');
+    return;
+  }
+
+  const id = `letter-${slugify(title)}-${date}`;
+  const escapedBody = body.replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+
+  const code = `  {
+    id: "${id}",
+    date: "${date}",
+    title: "${title.replace(/"/g, '\\"')}",
+    body: \`${escapedBody}\`
+  },`;
+
+  document.getElementById('codeOutput').value = code;
+  document.getElementById('output').style.display = 'block';
+  document.getElementById('output').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const el = document.getElementById('codeOutput');
+  el.select();
+  navigator.clipboard.writeText(el.value).then(() => {
+    document.getElementById('copyBtn').textContent = 'Copied ✓';
+    setTimeout(() => { document.getElementById('copyBtn').textContent = 'Copy Code'; }, 1800);
+  });
+});
+
+/* ---------------- NOTIFY ----------------
+   Change NTFY_TOPIC to your own topic (same idea as the proposal site).
+   Durell subscribes to this exact topic once in the ntfy app. */
+const NTFY_TOPIC = "durell-letters-p9k3m7qz";
+
+document.getElementById('notifyBtn').addEventListener('click', () => {
+  const title = document.getElementById('titleInput').value.trim() || 'A new letter';
+  const status = document.getElementById('notifyStatus');
+  status.textContent = 'Sending...';
+
+  fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+    method: 'POST',
+    body: `"${title}" just arrived. Go read it.`,
+    headers: { 'Title': 'A letter has arrived 💌', 'Priority': 'high', 'Tags': 'love_letter' }
+  })
+  .then(() => { status.textContent = 'Sent — she should get the notification shortly.'; })
+  .catch(() => { status.textContent = 'Something went wrong sending the notification. Check your connection and try again.'; });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sealed Letters — for Khyla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0c0908;
+    --ledger:#1a120f;
+    --ledger-line:#241a15;
+    --ember:#b9502a;
+    --ember-bright:#e07a45;
+    --brass:#8c7239;
+    --brass-dim:#5f4e2a;
+    --oxblood:#4a1116;
+    --vellum:#e6dbc0;
+    --vellum-dim:#b7a988;
+    --smoke:#544942;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--void); color:var(--vellum); font-family:'EB Garamond', serif; overflow-x:hidden;}
+  ::selection{background:var(--ember); color:var(--void);}
+  a{color:inherit;}
+
+  .display{font-family:'Cormorant Garamond', serif;}
+  .label{
+    font-family:'Cinzel', serif; letter-spacing:0.26em; text-transform:uppercase;
+    font-size:0.66rem; color:var(--brass);
+  }
+  :focus-visible{outline:2px solid var(--ember-bright); outline-offset:3px;}
+
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+  .vignette{position:fixed; inset:0; pointer-events:none; z-index:4; box-shadow: inset 0 0 20vw 5vw rgba(0,0,0,0.8);}
+
+  /* ---------------- GATE ---------------- */
+  #gate{
+    position:fixed; inset:0; z-index:100; background:var(--void);
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transition:opacity 1.2s ease, visibility 1.2s ease;
+  }
+  #gate.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+  .gate-seal{
+    width:56px; height:56px; border-radius:50%; margin-bottom:2rem; position:relative;
+    background:radial-gradient(circle at 35% 30%, var(--ember-bright), var(--ember) 55%, var(--oxblood) 100%);
+    box-shadow:0 0 30px 6px rgba(185,80,42,0.35), inset 0 0 12px rgba(0,0,0,0.5);
+    animation:embersPulse 3.4s ease-in-out infinite;
+  }
+  .gate-seal::before{
+    content:'D·N'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Cinzel'; font-size:0.72rem; letter-spacing:0.08em; color:rgba(230,219,192,0.9);
+  }
+  @keyframes embersPulse{
+    0%,100%{box-shadow:0 0 30px 6px rgba(185,80,42,0.3), inset 0 0 12px rgba(0,0,0,0.5);}
+    50%{box-shadow:0 0 42px 10px rgba(224,122,69,0.45), inset 0 0 12px rgba(0,0,0,0.5);}
+  }
+  #gate h1{
+    font-size:1.5rem; font-weight:500; font-style:italic; color:var(--vellum-dim);
+    margin-bottom:2.2rem; text-align:center; padding:0 1.4rem; max-width:480px;
+  }
+  #enterBtn{
+    font-family:'Cinzel'; letter-spacing:0.2em; font-size:0.7rem; background:transparent;
+    border:1px solid var(--brass); color:var(--brass); padding:0.9rem 2.2rem; cursor:pointer;
+    text-transform:uppercase; transition:background 0.4s, color 0.4s, border-color 0.4s;
+  }
+  #enterBtn:hover{background:var(--brass); color:var(--void); border-color:var(--brass);}
+
+  /* ---------------- HERO ---------------- */
+  #hero{position:relative; height:82svh; width:100%; overflow:hidden;}
+  #heroCanvas{position:absolute; inset:0; width:100%; height:100%;}
+  .hero-text{position:absolute; left:0; right:0; bottom:9%; text-align:center; z-index:2; pointer-events:none;}
+  .hero-text .label{margin-bottom:1.1rem;}
+  .hero-text h1{
+    font-size:clamp(2.1rem, 5.5vw, 3.8rem); font-weight:600; color:var(--vellum);
+    text-shadow:0 0 34px rgba(0,0,0,0.65); line-height:1.15;
+  }
+  .hero-text h1 em{color:var(--ember-bright); font-style:italic;}
+  .hero-text .epigraph{
+    margin:1.3rem auto 0; max-width:420px; font-style:italic; color:var(--vellum-dim); font-size:1.02rem;
+  }
+  .scroll-cue{
+    position:absolute; bottom:3%; left:50%; transform:translateX(-50%); z-index:2;
+    font-family:'Cinzel'; font-size:0.6rem; letter-spacing:0.3em; color:var(--vellum-dim);
+    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+  }
+  .scroll-line{width:1px; height:30px; background:linear-gradient(var(--ember), transparent); animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:0.3;} 50%{opacity:1;}}
+
+  /* ---------------- ARCHIVE (ledger rows) ---------------- */
+  #archive{max-width:780px; margin:0 auto; padding:4vh 6vw 14vh; position:relative; z-index:2;}
+  #archive .intro{text-align:center; margin-bottom:5vh;}
+  #archive .intro .label{display:block; margin-bottom:0.9rem;}
+  #archive .intro h2{font-size:clamp(1.5rem,3.6vw,2.1rem); color:var(--vellum); margin-bottom:0.8rem;}
+  #archive .intro p{color:var(--vellum-dim); font-style:italic; max-width:460px; margin:0 auto;}
+
+  .ledger{border-top:1px solid var(--ledger-line);}
+  .entry{
+    display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1.4rem;
+    padding:1.5rem 0.6rem; border-bottom:1px solid var(--ledger-line); cursor:pointer;
+    background:transparent; transition:background 0.3s ease;
+    opacity:0; transform:translateY(16px);
+  }
+  .entry.visible{opacity:1; transform:translateY(0); transition:opacity 0.8s ease, transform 0.8s ease, background 0.3s ease;}
+  .entry:hover{background:rgba(185,80,42,0.05);}
+  .entry:hover .seal-mini{transform:scale(1.08);}
+
+  .postmark{
+    width:58px; height:58px; border:1.5px dashed var(--brass-dim); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transform:rotate(-6deg); flex-shrink:0;
+  }
+  .postmark .mon{font-family:'Cinzel'; font-size:0.62rem; letter-spacing:0.08em; color:var(--brass);}
+  .postmark .day{font-family:'Cormorant Garamond'; font-style:italic; font-size:1.35rem; color:var(--vellum-dim); line-height:1;}
+
+  .entry-title h3{font-size:1.5rem; font-weight:500; font-style:italic; color:var(--vellum);}
+  .entry-title .hint{font-family:'Cinzel'; font-size:0.6rem; letter-spacing:0.14em; color:var(--smoke); margin-top:0.35rem; text-transform:uppercase;}
+
+  .seal-mini{
+    width:40px; height:40px; border-radius:50%; flex-shrink:0; position:relative;
+    background:radial-gradient(circle at 35% 30%, var(--ember-bright), var(--ember) 55%, var(--oxblood) 100%);
+    box-shadow:0 3px 8px rgba(0,0,0,0.5); transition:transform 0.3s ease;
+  }
+  .seal-mini::before{
+    content:'D·N'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Cinzel'; font-size:0.5rem; color:rgba(230,219,192,0.85);
+  }
+
+  .empty-state{text-align:center; color:var(--vellum-dim); font-style:italic; padding:5vh 0;}
+
+  footer{text-align:center; padding:5vh 4vw 6vh; color:var(--smoke); font-size:0.8rem; position:relative; z-index:2;}
+
+  /* ---------------- SEAL-BREAK TRANSITION ---------------- */
+  #sealBreak{
+    position:fixed; inset:0; z-index:150; display:flex; align-items:center; justify-content:center;
+    pointer-events:none; opacity:0; visibility:hidden;
+  }
+  #sealBreak.show{opacity:1; visibility:visible;}
+  #sealBreak .backdrop{position:absolute; inset:0; background:rgba(5,3,2,0); transition:background 0.35s ease;}
+  #sealBreak.show .backdrop{background:rgba(5,3,2,0.92);}
+  .seal-half{
+    position:absolute; width:70px; height:140px; overflow:hidden; top:50%; margin-top:-70px;
+    transition:transform 0.55s cubic-bezier(.6,.05,.4,1), opacity 0.55s ease;
+  }
+  .seal-half .circle{
+    width:140px; height:140px; border-radius:50%; position:absolute; top:0;
+    background:radial-gradient(circle at 35% 30%, var(--ember-bright), var(--ember) 55%, var(--oxblood) 100%);
+    box-shadow:0 0 40px 10px rgba(185,80,42,0.4);
+  }
+  .seal-half.left{left:calc(50% - 70px);}
+  .seal-half.left .circle{left:0;}
+  .seal-half.right{left:50%;}
+  .seal-half.right .circle{left:-70px;}
+  #sealBreak.crack .seal-half.left{transform:translateX(-90px) rotate(-30deg); opacity:0;}
+  #sealBreak.crack .seal-half.right{transform:translateX(90px) rotate(30deg); opacity:0;}
+  .seal-crest{
+    position:absolute; z-index:2; font-family:'Cinzel'; font-size:0.85rem; letter-spacing:0.1em;
+    color:rgba(230,219,192,0.9); opacity:1; transition:opacity 0.3s ease;
+  }
+  #sealBreak.crack .seal-crest{opacity:0;}
+
+  /* ---------------- MODAL / LETTER PAGE ---------------- */
+  #modalBackdrop{
+    position:fixed; inset:0; z-index:140; background:rgba(5,3,2,0.92);
+    display:flex; align-items:center; justify-content:center; padding:5vh 5vw;
+    opacity:0; visibility:hidden; transition:opacity 0.5s ease 0.15s, visibility 0.5s ease 0.15s;
+  }
+  #modalBackdrop.show{opacity:1; visibility:visible;}
+  #modalCard{
+    background:linear-gradient(170deg, #efe3c8, #e6d8b8);
+    color:#241713; max-width:620px; width:100%; max-height:82vh; overflow-y:auto;
+    padding:3.4rem 2.8rem; position:relative; box-shadow:0 30px 90px rgba(0,0,0,0.75);
+    transform:scale(0.92) translateY(24px); transition:transform 0.5s ease 0.15s;
+    border-top:5px solid var(--oxblood);
+  }
+  #modalBackdrop.show #modalCard{transform:scale(1) translateY(0);}
+  #modalClose{
+    position:absolute; top:1.2rem; right:1.4rem; background:none; border:none; cursor:pointer;
+    font-family:'Cinzel'; font-size:0.68rem; letter-spacing:0.15em; color:#8a7458;
+  }
+  #modalDate{font-family:'Cinzel'; font-size:0.64rem; letter-spacing:0.2em; color:var(--oxblood); text-transform:uppercase; margin-bottom:0.7rem;}
+  #modalTitle{font-family:'Cormorant Garamond'; font-style:italic; font-size:2.1rem; margin-bottom:1.6rem; color:#1a1010;}
+  #modalBody{font-size:1.14rem; line-height:1.9; white-space:pre-wrap;}
+  #modalBody::first-letter{
+    font-family:'Cinzel'; font-size:3.4rem; float:left; line-height:0.8; padding:0.1rem 0.5rem 0 0;
+    color:var(--oxblood);
+  }
+
+  @media (max-width:560px){
+    .entry{grid-template-columns:auto 1fr auto; gap:0.9rem; padding:1.2rem 0.2rem;}
+    .postmark{width:48px; height:48px;}
+    .entry-title h3{font-size:1.25rem;}
+    #modalCard{padding:2.4rem 1.6rem;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<div id="gate">
+  <div class="gate-seal"></div>
+  <h1 class="display">Every hellbound house keeps its letters sealed. This one is ours.</h1>
+  <button id="enterBtn">Break the seal</button>
+</div>
+
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-text">
+    <p class="label">a private correspondence</p>
+    <h1 class="display">The Sealed Letters,<br>for <em>Durell</em></h1>
+    <p class="epigraph">Some men said no one touches what's theirs. Others said they'd go to hell for her. This is only ink and wax — but it's built to mean the same thing.</p>
+  </div>
+  <div class="scroll-cue"><span>the ledger</span><div class="scroll-line"></div></div>
+</section>
+
+<section id="archive">
+  <div class="intro">
+    <span class="label">Break a seal to read</span>
+    <h2 class="display">The Ledger</h2>
+    <p>Every entry, kept in order — newest first.</p>
+  </div>
+  <div class="ledger" id="letterGrid"></div>
+</section>
+
+<footer>a private ledger — kept by Nickson, for Khyla</footer>
+
+<div id="sealBreak">
+  <div class="backdrop"></div>
+  <div class="seal-crest">D · N</div>
+  <div class="seal-half left"><div class="circle"></div></div>
+  <div class="seal-half right"><div class="circle"></div></div>
+</div>
+
+<div id="modalBackdrop">
+  <div id="modalCard">
+    <button id="modalClose">close ✕</button>
+    <div id="modalDate"></div>
+    <div id="modalTitle"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="letters.js"></script>
+<script>
+/* ---------------- GATE ---------------- */
+let heroStarted = false;
+const gate = document.getElementById('gate');
+document.getElementById('enterBtn').addEventListener('click', () => {
+  gate.classList.add('hidden');
+  startHeroScene();
+});
+
+/* ---------------- RENDER LEDGER ---------------- */
+const grid = document.getElementById('letterGrid');
+const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+function parts(iso){
+  const d = new Date(iso + 'T00:00:00');
+  return { mon: MONTHS[d.getMonth()], day: d.getDate(), full: d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) };
+}
+
+function renderLetters(){
+  const sorted = [...LETTERS].sort((a,b) => new Date(b.date) - new Date(a.date));
+  if(sorted.length === 0){
+    grid.innerHTML = '<div class="empty-state">The ledger is empty for now — the next entry is being written.</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  sorted.forEach((letter, i) => {
+    const p = parts(letter.date);
+    const row = document.createElement('div');
+    row.className = 'entry';
+    row.innerHTML = `
+      <div class="postmark"><span class="mon">${p.mon}</span><span class="day">${p.day}</span></div>
+      <div class="entry-title">
+        <h3 class="display">${letter.title}</h3>
+        <div class="hint">seal · unbroken</div>
+      </div>
+      <div class="seal-mini"></div>
+    `;
+    row.addEventListener('click', () => breakSeal(letter));
+    grid.appendChild(row);
+    setTimeout(() => row.classList.add('visible'), 50 * i);
+  });
+}
+renderLetters();
+
+/* ---------------- SEAL BREAK + MODAL ---------------- */
+const sealBreak = document.getElementById('sealBreak');
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalDate = document.getElementById('modalDate');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+function breakSeal(letter){
+  sealBreak.classList.remove('crack');
+  sealBreak.classList.add('show');
+  // force reflow so the crack transition restarts cleanly each time
+  void sealBreak.offsetWidth;
+  requestAnimationFrame(() => sealBreak.classList.add('crack'));
+
+  setTimeout(() => {
+    const p = parts(letter.date);
+    modalDate.textContent = p.full;
+    modalTitle.textContent = letter.title;
+    modalBody.textContent = letter.body;
+    modalBackdrop.classList.add('show');
+    sealBreak.classList.remove('show', 'crack');
+  }, 560);
+}
+function closeModal(){ modalBackdrop.classList.remove('show'); }
+modalClose.addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', (e) => { if(e.target === modalBackdrop) closeModal(); });
+
+/* ---------------- HERO THREE.JS SCENE (chained ledger) ---------------- */
+function startHeroScene(){
+  if(heroStarted) return;
+  heroStarted = true;
+
+  const canvas = document.getElementById('heroCanvas');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0c0908, 0.05);
+
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.set(0, 1.9, 7);
+  camera.lookAt(0, 0.3, 0);
+
+  function resize(){
+    const w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const table = new THREE.Mesh(
+    new THREE.CylinderGeometry(6, 6, 0.4, 48),
+    new THREE.MeshStandardMaterial({color:0x140f0d, roughness:0.9})
+  );
+  table.position.y = -1.4;
+  scene.add(table);
+
+  // the bound ledger (leather tome)
+  const tome = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({color:0x2a1a12, roughness:0.55});
+  const pagesMat = new THREE.MeshStandardMaterial({color:0xe6dbc0, roughness:0.85});
+  const cover = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.35, 2.9), bodyMat);
+  tome.add(cover);
+  const pages = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.3, 2.75), pagesMat);
+  pages.position.y = 0.01;
+  tome.add(pages);
+
+  // wax seal on the cover
+  const seal = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.28, 0.28, 0.07, 24),
+    new THREE.MeshStandardMaterial({color:0x8a3418, roughness:0.5, emissive:0x3a1206, emissiveIntensity:0.4})
+  );
+  seal.position.set(0, 0.2, 0);
+  tome.add(seal);
+
+  // chain wrapped around (simple torus links)
+  const chainMat = new THREE.MeshStandardMaterial({color:0x6b5a34, roughness:0.4, metalness:0.6});
+  const chainGroup = new THREE.Group();
+  const linkCount = 10;
+  for(let i=0;i<linkCount;i++){
+    const link = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.045, 8, 16), chainMat);
+    const t = i / linkCount;
+    const angle = t * Math.PI * 2;
+    link.position.set(Math.cos(angle) * 1.35, 0.19 + Math.sin(t * Math.PI * 4) * 0.02, Math.sin(angle) * 1.75);
+    link.rotation.y = angle;
+    link.rotation.x = Math.PI / 2.3;
+    chainGroup.add(link);
+  }
+  tome.add(chainGroup);
+
+  tome.rotation.x = -0.08;
+  tome.position.y = -1.15;
+  scene.add(tome);
+
+  // candle
+  function makeCandle(x, z, scale){
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12, 0.13, 1.1, 20),
+      new THREE.MeshStandardMaterial({color:0xd8c9a3, roughness:0.6})
+    );
+    body.position.y = 0.55;
+    g.add(body);
+    const flameLight = new THREE.PointLight(0xe07a45, 1.6, 6, 2);
+    flameLight.position.set(0, 1.2, 0);
+    g.add(flameLight);
+    const flame = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.22, 10), new THREE.MeshBasicMaterial({color:0xffb37a}));
+    flame.position.y = 1.24;
+    g.add(flame);
+    g.position.set(x, -1.4, z);
+    g.scale.setScalar(scale);
+    g.userData.flame = flame;
+    g.userData.light = flameLight;
+    return g;
+  }
+  const candle1 = makeCandle(-2.6, -0.6, 1.05);
+  scene.add(candle1);
+
+  scene.add(new THREE.AmbientLight(0x1c1310, 1.15));
+  const rim = new THREE.DirectionalLight(0x6b5d5a, 0.35);
+  rim.position.set(-3, 4, -2);
+  scene.add(rim);
+
+  // rising embers instead of gold dust
+  const emberCount = 160;
+  const emberGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(emberCount * 3);
+  const speeds = new Float32Array(emberCount);
+  for(let i=0;i<emberCount;i++){
+    positions[i*3] = (Math.random()-0.5) * 8;
+    positions[i*3+1] = Math.random() * 5 - 1.4;
+    positions[i*3+2] = (Math.random()-0.5) * 6;
+    speeds[i] = 0.002 + Math.random() * 0.004;
+  }
+  emberGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const embers = new THREE.Points(emberGeo, new THREE.PointsMaterial({color:0xd9713f, size:0.03, transparent:true, opacity:0.75}));
+  scene.add(embers);
+
+  const clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    tome.rotation.y = Math.sin(t * 0.2) * 0.22;
+
+    const f = candle1.userData.flame, l = candle1.userData.light;
+    const flick = 1 + Math.sin(t * 9) * 0.12 + Math.sin(t * 23) * 0.05;
+    f.scale.set(flick, flick, flick);
+    l.intensity = 1.4 + Math.sin(t * 8) * 0.35;
+
+    const ep = embers.geometry.attributes.position.array;
+    for(let i=0;i<emberCount;i++){
+      ep[i*3+1] += speeds[i];
+      ep[i*3] += Math.sin(t + i) * 0.0008;
+      if(ep[i*3+1] > 4.5) ep[i*3+1] = -1.4;
+    }
+    embers.geometry.attributes.position.needsUpdate = true;
+
+    camera.position.x = Math.sin(t * 0.08) * 0.55;
+    camera.lookAt(0, 0.2, 0);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+
+window.addEventListener('scroll', () => { if(!heroStarted) startHeroScene(); }, {once:true});
+
+/* ---------------- SCROLL REVEAL FOR LEDGER ROWS ---------------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.15});
+document.querySelectorAll('.entry').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
