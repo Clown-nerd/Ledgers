@@ -36,7 +36,7 @@ I'll see you in the next one.
 — Nickson`
   }
 
-    {
+  ,{
     id: "letter-late-night-thoughts-2026-07-21",
     date: "2026-07-21",
     title: "late night thoughts",
