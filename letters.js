@@ -35,4 +35,14 @@ I'll see you in the next one.
 
 — Nickson`
   }
+
+    {
+    id: "letter-late-night-thoughts-2026-07-21",
+    date: "2026-07-21",
+    title: "late night thoughts",
+    body: `You’ve been woven into my days so naturally that the mere thought of you comes as simplicity as breathing🧘🏿. As I open my eyes to the dawn of a new day, you’re the vision I see before I fully wake. Within the beauty of the sky, song on Spotify, the highs and lows, laughter, and sorrows throughout the day; you’re the one my mind carries with me in both longing and comfort🫂. And when the stars are shining bright as the night settles in, I happily drift off into dream land knowing it’s you I’ll find there🛌🏾. You see, the day you came into my life is the day you never left my mind.
+ And if one day the stars call you by your name , don't be surprised coz I tell them about you every night.🌌
+I see a meticulous memory play out in my mind a 100 thousand times over and find my self drifting off to a place beyond to were my wildest dreams can go the creazyest part of it, you just so happend to walk in on every single one of them.😔
+'Aheri' ❤️..... goodnight beautiful 💝`
+  },
 ];
