@@ -37,8 +37,8 @@ I'll see you in the next one.
   }
 
   ,{
-    id: "letter-late-night-thoughts-2026-07-21",
-    date: "2026-07-21",
+    id: "letter-late-night-thoughts-2026-07-22",
+    date: "2026-07-22",
     title: "late night thoughts",
     body: `Loved one,
     You’ve been woven into my days so naturally that the mere thought of you comes as simplicity as breathing🧘🏿.
