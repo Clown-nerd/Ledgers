@@ -182,18 +182,23 @@ document.getElementById('copyBtn').addEventListener('click', () => {
    Durell subscribes to this exact topic once in the ntfy app. */
 const NTFY_TOPIC = "durell-letters-p9k3m7qz";
 
-document.getElementById('notifyBtn').addEventListener('click', () => {
+document.getElementById('notifyBtn').addEventListener('click', async () => {
   const title = document.getElementById('titleInput').value.trim() || 'A new letter';
   const status = document.getElementById('notifyStatus');
   status.textContent = 'Sending...';
 
-  fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
-    method: 'POST',
-    body: `"${title}" just arrived. Go read it.`,
-    headers: { 'Title': 'A letter has arrived 💌', 'Priority': 'high', 'Tags': 'love_letter' }
-  })
-  .then(() => { status.textContent = 'Sent — she should get the notification shortly.'; })
-  .catch(() => { status.textContent = 'Something went wrong sending the notification. Check your connection and try again.'; });
+  try {
+    const res = await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+      method: 'POST',
+      body: `"${title}" just arrived. Go read it.`,
+      headers: { 'Title': 'A letter has arrived', 'Priority': 'high', 'Tags': 'love_letter' }
+    });
+    if(!res.ok) throw new Error('ntfy responded with status ' + res.status);
+    status.textContent = 'Sent — she should get the notification shortly.';
+  } catch(err){
+    status.textContent = 'Something went wrong sending the notification: ' + err.message;
+    console.error('Notify error:', err);
+  }
 });
 </script>
 </body>
