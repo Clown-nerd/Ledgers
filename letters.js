@@ -49,4 +49,17 @@ I'll see you in the next one.
     I see a meticulous memory play out in my mind a 100 thousand times over and find my self drifting off to a place beyond to were my wildest dreams can go the creazyest part of it, you just so happend to walk in on every single one of them.😔
     'Aheri' ❤️..... goodnight beautiful 💝`
   },
+    {
+    id: "letter-i-couldn-t-sleep-2026-07-30",
+    date: "2026-07-30",
+    title: "I couldn't sleep",
+    body: `I don't know how to write this without sounding like everyone else's love letter, so i'm just going to write it badly and hope that you feel it anyway.
+I keep thinking about your smile. Not in a poetic way  but i just actually think about it, randomly, in the middle of doing something else, and it derails me for a second. 
+You call yourself weird. I don't see it that way, i see someone who refuses to shrink herself for anyone, and honestly, being near that makes me want to be less careful too, less filtered, more like myself.
+I need to day something about the WhatsApp thing, properly not just the "sorry it happened." When you blocked me my first instinct wasn't to call you. it was to wait. I told myself that you'd unblock me once you cooled off, and there was some stupid pride in that like calling first would mean i lost something. That's ego plain and simple, and i caught myself in it and hated it. So i called, though i didn't have anything smart to say, I just needed you to know I wasn't going anywhere, ego or not.
+One more thing I need to own: I raised my voice at you on that call. I was so focused on making you understand it wasn't my fault about the messages that I stopped paying attention to how I was saying it. Being right about the WhatsApp glitch doesn't matter if I made you feel shouted at while you were already hurt. I'm sorry for that part specifically not the explaining, the way I explained it.
+I know i'm quiet, I've thought about whether that makes me boring to you. But when I'm quiet, I'm usually just watching you, or replaying something you said, trying to remember it right. I want to know you and  your life in the kind of detail where you don't have to ask me for anything because I already noticed and already handled it. Not to impress you but just because i want to know you, all of you not just the highlighted reel.
+Right now uko Kendu, na i'm here missing you in a very ordinary unglamorous way, just wishing you were close enough to talk to while in each other's arms instead of through a screen that apparently can't be trusted. 
+I love you, not in the dramatic everything is perfect way but in the way where we hit a rough patch in within weeks of you saying yes, and i wouldn't undo any of it. That's the real test, I think we just passed our first one.`
+  },
 ];
