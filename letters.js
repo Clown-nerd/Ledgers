@@ -62,4 +62,14 @@ I know i'm quiet, I've thought about whether that makes me boring to you. But wh
 Right now uko Kendu, na i'm here missing you in a very ordinary unglamorous way, just wishing you were close enough to talk to while in each other's arms instead of through a screen that apparently can't be trusted. 
 I love you, not in the dramatic everything is perfect way but in the way where we hit a rough patch in within weeks of you saying yes, and i wouldn't undo any of it. That's the real test, I think we just passed our first one.`
   },
+    {
+    id: "letter-happy-girlfriends-day-2026-07-31",
+    date: "2026-07-31",
+    title: "Happy girlfriends day",
+    body: `It's one minute past midnight and I wanted to be the first thing that reaches you today, before anyone else's "happy girlfriend's day" message does.
+I looked it up — technically this day was made for women and their friends, not girlfriends like you and me. I don't care. I'm claiming it anyway, because you're the only girlfriend I've got and I'm not waiting for a more official excuse to tell you what I already think every day.
+You're my girlfriend. I still like boasting that out.
+I'm not going to write you something long tonight — you already know how I feel, I've said a lot of it recently and meant every word. Tonight I just wanted you to open your phone at midnight and see my name before your alarm even goes off. Small thing. But I wanted to be it.
+Happy girlfriend's day ML❤️. I got lucky, and I know it.`
+  },
 ];
