@@ -1,4 +1,4 @@
-/*
+8/*
   LETTERS DATA FILE
   ------------------
   Add a new letter object to the LETTERS array below (order doesn't matter,
@@ -71,5 +71,19 @@ I looked it up — technically this day was made for women and their friends, no
 You're my girlfriend. I still like boasting that out.
 I'm not going to write you something long tonight — you already know how I feel, I've said a lot of it recently and meant every word. Tonight I just wanted you to open your phone at midnight and see my name before your alarm even goes off. Small thing. But I wanted to be it.
 Happy girlfriend's day ML❤️. I got lucky, and I know it.`
+  },
+  {
+    id: "letter--2026-08-02",
+    date: "2026-08-02",
+    title: "🔫",
+    body: `Dearest,
+I've been trying to find the right way to say this for a few days, so bear with me if it takes a while to get where I'm going.
+You are the lighthouse of my universe. I don't say that as a line I found somewhere I mean it the practical way a sailor means it. Everything else in my life moves, shifts, gets uncertain. You're the fixed point. The thing I orient toward without having to think about it. On the days that go wrong, some part of me is still tracking your light, even from a distance.
+I don't want a version of my life that doesn't have you fully in it. Not the parts that are easy, and not the parts that are hard. I want to build things with you — actual things, the boring kind too, the kind nobody writes songs about. I want to argue about small stuff and fix it the way we did with the WhatsApp mess. I want to know your bad mornings as well as I know your laugh. I want the every day log. Not just the good side. All of it.
+I love you . Not abstractly, not as a nice thing to say — I think about you constantly, in the middle of things that have nothing to do with you, and you show up anyway. You cross my mind at the most inconvenient times and I don't try to push you back out. You've become a significant part of my life in a way I don't think you fully know yet, and I wanted to be the one to tell you plainly instead of hoping you'd guess it.
+And I won't pretend I've forgotten Monday. I think about the way you were with me — unguarded, close, giving me something you don't hand out easily. I think about your hands, the way you said my name, how being that close to you made the rest of the world go quiet for a while. I'm not going to write it all out here, because some things are better kept as memory between us than spelled out on a page. But I want you to know it stayed with me. It still does.
+I don't know how to end this without it sounding smaller than it is, so I'll just say it straight: I want a life with you in it, every day of it, the ordinary ones especially. You are loved, you are cherished, and you hold a part of my life that nothing else touches.
+Yours,
+Silly human`
   },
 ];
